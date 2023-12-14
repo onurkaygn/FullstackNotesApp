@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "GkWOjWUhvUnD1CKDqSDNW5NfBwNq7TQ8EnfEBjIccIQ=",
+  "Source": "FullstackNotesApp",
+  "BasePath": "_content/FullstackNotesApp",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
