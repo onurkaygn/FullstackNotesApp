@@ -4,7 +4,10 @@ const descriptionInput = document.querySelector('#description');
 const notesContainer = document.querySelector('#notes__container');
 
 
-
+function clearForm() {
+    titleInput.value = '';
+    descriptionInput.value = '';
+}
 
 
 
@@ -25,7 +28,10 @@ fetch('https://localhost:7054/api/notes', {
     }
 })
 .then(data => data.json())
-.then(response => displayNotes(response));
+.then(response => {
+    clearForm();
+    getAllNotes();
+});
 
 }
 
@@ -47,8 +53,9 @@ notes.forEach(note => {
                             </div>
                               `;  
     allNotes += noteElement;
+   
 });
-notesContainer.innerHTML = allNotes;
+    notesContainer.innerHTML = allNotes;
 }
 
 
