@@ -10,8 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<NotesDbContext>(options => options.UseSqlServer(
-builder.Configuration.GetConnectionString("NotesDbConnectionString")));
+builder.Services.AddDbContext<NotesDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("NotesDbConnectionString")));
 
 
 
