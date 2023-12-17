@@ -3,30 +3,24 @@ const titleInput = document.querySelector('#title');
 const descriptionInput = document.querySelector('#description');
 const notesContainer = document.querySelector('#notes__container');
 const deleteButton = document.querySelector('#btnDelete');
-
-
+const currentItem = document.querySelector('#note_id');
 
 function clearForm() {
     titleInput.value = '';
     descriptionInput.value = '';
     deleteButton.classList.add('hidden');
 }
-
-
 function displayNoteInForm(note) {
     titleInput.value = note.title;
     descriptionInput.value = note.description;
     deleteButton.classList.remove('hidden');
-    deleteButton.setAttribute('data-id', note.id);
-}
-function getNoteById(id) {
-        fetch(`https://localhost:7054/api/notes/${id}`)
-        .then(data => data.json())
-        .then(response => displayNoteInForm(response));
+    currentItem.value = note.id;
 }
 
 function populateForm(id) {
-    getNoteById(id);
+    fetch(`https://localhost:7054/api/notes/${id}`)
+    .then(data => data.json())
+    .then(response => displayNoteInForm(response));
 }
 
 function addNote(title, description) {
@@ -51,15 +45,11 @@ fetch('https://localhost:7054/api/notes', {
 });
 
 }
-
-
-
 function getAllNotes() {
     fetch(`https://localhost:7054/api/notes`)
     .then(data => data.json())
     .then(response => displayNotes(response));
 }
-
 function displayNotes(notes) {
     let allNotes = '';
 
@@ -84,10 +74,39 @@ notesContainer.innerHTML = allNotes;
     });
 }
 
-
 getAllNotes();
+
+function updateNote(id, title, description) {
+    const body = {
+        title: title,
+        description: description,
+        isVisible: true
+};
+
+
+fetch(`https://localhost:7054/api/notes/${id}`, {
+    method:'PUT',
+    body: JSON.stringify(body),
+    headers: {
+        "content-type": "application/json"
+    }
+})
+.then(data => data.json())
+.then(response => {
+    clearForm();
+    getAllNotes();
+});
+}
+
 saveButton.addEventListener('click',function() {
-    addNote(titleInput.value, descriptionInput.value);
+    const id = currentItem.value;
+    if(id) {
+        updateNote(id, titleInput.value, description.value);
+    }
+    else {
+        addNote(titleInput.value, description.value);
+    }
+    currentItem.value = null;
 });
 
 function deleteNote(id) {
@@ -101,9 +120,10 @@ function deleteNote(id) {
      clearForm();
      getAllNotes();
     });
+    currentItem.value = null;
 }
 
 deleteButton.addEventListener('click', function() {
-   const id = deleteButton.dataset.id;
+   const id = currentItem.value;
     deleteNote(id);
 });
